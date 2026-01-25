@@ -1,10 +1,14 @@
 from odoo import models, fields
+from odoo.exceptions import ValidationError
 
 
+# Model untuk mencatat insiden yang terjadi pada pelanggan atau pengiriman
 class CourierIncident(models.Model):
+    # Definisi model CourierIncident
     _name = 'courier.incident'
     _description = 'Courier Incident'
 
+    # Fields untuk model CourierIncident
     name = fields.Char(
         string='Judul Insiden',
         required=True
@@ -62,6 +66,22 @@ class CourierIncident(models.Model):
         readonly=True
     )
 
+    #sql constraints
+    _sql_constraints = [
+        (
+            'unique_customer_incident',
+            'unique(customer_id, incident_datetime, incident_type)',
+            'Insiden dengan tipe yang sama untuk pelanggan yang sama pada waktu yang sama sudah ada.'
+
+    )]
+    # Python validations
+    @api.constrains('state', 'followup_note')
+    def _check_followup_note(self):
+        for record in self:
+            if record.state == 'done' and not record.followup_note:
+                raise ValidationError("Catatan Follow Up wajib diisi sebelum menandai insiden sebagai Done.")
+
+    # Methods untuk mengubah state insiden
     def action_followup(self):
         """Ubah state menjadi followup"""
         self.write({

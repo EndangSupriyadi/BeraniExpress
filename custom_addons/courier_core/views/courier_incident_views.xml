@@ -12,6 +12,7 @@
                         <button name="action_done" string="Resolve" type="object" class="btn-primary" invisible="state != 'followup'"/>
                         <field name="state" widget="statusbar"/>
                     </header>
+                    <!-- Header buttons for state transitions -->
                     <sheet>
                         <h1><field name="name" placeholder="Judul Insiden"/></h1>
                         <group>
@@ -43,7 +44,7 @@
             <field name="name">courier.incident.list</field>
             <field name="model">courier.incident</field>
             <field name="arch" type="xml">
-                <list>
+                <list decoration-warning="state ==  'followup'" decoration-success="state == 'done'">
                     <field name="name"/>
                     <field name="customer_id"/>
                     <field name="incident_type"/>

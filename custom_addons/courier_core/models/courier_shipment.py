@@ -1,6 +1,6 @@
 from odoo import models, fields
 
-
+# Model untuk mencatat pengiriman kurir
 class CourierShipment(models.Model):
     _name = 'courier.shipment'
     _description = 'Courier Shipment'
