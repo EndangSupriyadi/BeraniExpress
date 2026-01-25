@@ -1,5 +1,5 @@
-from odoo import models, fields
-from odoo.exceptions import ValidationError
+from odoo import models, fields, api # type: ignore
+from odoo.exceptions import ValidationError # type: ignore
 
 
 # Model untuk mencatat insiden yang terjadi pada pelanggan atau pengiriman
@@ -89,6 +89,11 @@ class CourierIncident(models.Model):
         })
 
     def action_done(self):
+        """Validasi catatan followup sebelum menandai sebagai done"""
+        for record in self:
+            if not record.followup_note:
+                raise ValidationError("Catatan Follow Up wajib diisi sebelum menandai insiden sebagai Done.")
+        
         """Ubah state menjadi done dan isi resolved_at"""
         self.write({
             'state': 'done',
