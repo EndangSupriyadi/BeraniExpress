@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menu Parent -->
+        <menuitem id="courier_core_menu" name="Courier Core" sequence="1"/>
+    </data>
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="courier_incident_form" model="ir.ui.view">
+            <field name="name">courier.incident.form</field>
+            <field name="model">courier.incident</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_followup" string="Mark Follow Up" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_done" string="Resolve" type="object" class="btn-primary" invisible="state != 'followup'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <h1><field name="name" placeholder="Judul Insiden"/></h1>
+                        <group>
+                            <group>
+                                <field name="customer_id"/>
+                                <field name="incident_type"/>
+                                <field name="severity"/>
+                            </group>
+                            <group>
+                                <field name="shipment_id"/>
+                                <field name="incident_datetime"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Kronologi">
+                                <field name="description"/>
+                            </page>
+                            <page string="Catatan">
+                                <field name="followup_note"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- List View -->
+        <record id="courier_incident_list" model="ir.ui.view">
+            <field name="name">courier.incident.list</field>
+            <field name="model">courier.incident</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="incident_type"/>
+                    <field name="severity"/>
+                    <field name="incident_datetime"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="courier_incident_search" model="ir.ui.view">
+            <field name="name">courier.incident.search</field>
+            <field name="model">courier.incident</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="followup" string="Follow Up" domain="[('state', '=', 'followup')]"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="courier_incident_action" model="ir.actions.act_window">
+            <field name="name">Insiden</field>
+            <field name="res_model">courier.incident</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="courier_incident_menu" name="Insiden" action="courier_incident_action" parent="courier_core_menu"/>
+        
+    </data>
+</odoo>
